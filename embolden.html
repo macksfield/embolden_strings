@@ -1,0 +1,32 @@
+<script>
+
+function embolden_strings(input, targets) {
+  let matches = [];
+  targets.forEach(function(element) {
+    let startIndex = input.indexOf(element);
+    if(startIndex > -1) {
+      matches.push({'element': element, 'startIndex':startIndex, 'endIndex':startIndex + element.length - 1});
+    }
+  });
+  console.log(JSON.stringify(matches));
+  for(let i=0; i<matches.length; i++) {
+    for(let y=i+1; y<matches.length; y++) {
+      if(matches[i].endIndex > matches[y].startIndex) {
+        matches[i].endIndex = matches[y].endIndex;
+        matches.splice(y, 1);
+      }
+    }
+  }
+  let offset = 0;
+  for(let x=0; x<matches.length; x++) {
+    input = input.slice(0, matches[x].startIndex + offset) +
+      "<b>" + input.slice(matches[x].startIndex, matches[x].endIndex) + "</b>" +
+      input.slice(matches[x].endIndex + 1);
+    offset += 7;
+  }
+  console.log(JSON.stringify(matches));
+  console.log(input);
+}
+
+embolden_strings('abcdefghi', ['abc', 'bcde', 'hi']);
+</script>
